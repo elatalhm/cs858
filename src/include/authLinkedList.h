@@ -13,6 +13,7 @@ class AuthLinkedList
 
 
    public:
+   AuthLinkedList();
    ~AuthLinkedList();
    void insert_byIndx(T data, long index);
    void delete_byIndx(long index);

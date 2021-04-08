@@ -29,7 +29,7 @@ using namespace std;
 
 
 template <typename T>
-AuthLinkedList<T>::~AuthLinkedList(){
+AuthLinkedList<T>::AuthLinkedList(){
     size = 0;
 }
 
