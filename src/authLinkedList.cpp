@@ -38,7 +38,46 @@ AuthLinkedList<T>::AuthLinkedList(){
 
 template <typename T>
 void AuthLinkedList<T>::insert_byIndx(T data, long index){
-
+    // TODO
+    // check size and index
+    std::string sizeVerify = "autia ?, ?"
+    __asm [volatile] (sizeVerify 
+		: output_operand_list 
+		[: input_operand_list 
+		[: clobbered_register_list]] 
+	);
+    if(size < index){
+        throw(std::string("error: index is out of size of the list."));
+    }
+    // verify pointer to head
+    if(index < size ){
+    std::string headVerify = "autia ?, ?"
+    __asm [volatile] (headVerify 
+		: output_operand_list 
+		[: input_operand_list 
+		[: clobbered_register_list]] 
+	);}
+    else{// verify pointer to tail
+        std::string tailVerify = "autia ?, ?"
+    __asm [volatile] (tailVerify 
+		: output_operand_list 
+		[: input_operand_list 
+		[: clobbered_register_list]] 
+	);
+    }
+    //traverse and verify each
+    long counter = 1;
+    LinkedListNode * currentElement = first;
+    while(counter < index){
+        //TODO: verify MAC
+        ///...
+        currentElement = currentElement->nextElement;
+        counter = counter + 1;
+    }
+    //add element with MAC
+    //change the previous
+    //
+    
 }
    
 template <typename T>

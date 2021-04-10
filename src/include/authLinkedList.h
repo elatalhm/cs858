@@ -8,7 +8,7 @@ class AuthLinkedList
    private:
    LinkedListNode *first;
    LinkedListNode *last;
-   LinkedListNode *middle;
+   //LinkedListNode *middle;
    long size;
 
 
