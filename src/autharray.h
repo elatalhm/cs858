@@ -2,6 +2,8 @@
 
 #include "merkleNode.h"
 
+// register long secureReg asm ("r13");
+
 class AuthArray
 {
 public:

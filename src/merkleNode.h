@@ -29,4 +29,4 @@ public:
 	MerkleNode *m_parent;
 	MerkleNode *m_leftChild;
 	MerkleNode *m_rightChild;
-}
+};
