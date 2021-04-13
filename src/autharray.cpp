@@ -5,8 +5,6 @@
 #include <iostream>
 #include <queue>
 
-register unsigned long secureReg asm ("x19");
-
 AuthArray::AuthArray(unsigned int size)
 {
 	// TODO ensure size is a power of 2
@@ -27,7 +25,8 @@ AuthArray::~AuthArray()
 
 int AuthArray::Read(unsigned int index)
 {
-	register int result asm ("r0") = m_data[index];
+	// register int result asm ("r0") = m_data[index];
+	int result = m_data[index];
 	VerifyMerkleProof(index);
 	return result;
 }
@@ -88,8 +87,8 @@ void AuthArray::VerifyMerkleProof(unsigned int index)
 
 	// now current is either m_rightMerkle or m_leftMerkle
 	// verify root hash
-	if (Hash(m_leftMerkle->m_hash, m_rightMerkle->m_hash) != secureReg)
-		exit(-1);
+	// if (Hash(m_leftMerkle->m_hash, m_rightMerkle->m_hash) != secureReg)
+	// 	exit(-1);
 }
 
 // bottom-up breadth-first traversal
@@ -135,17 +134,43 @@ void AuthArray::HashAll()
 	m_rightMerkle = right;
 
 	// last hash; store it in secure register
-	secureReg = Hash(left->m_hash, right->m_hash);
+	// secureReg = Hash(left->m_hash, right->m_hash);
 }
 
 __attribute__ ((always_inline))
 int AuthArray::Hash(int left, int right)
 {
 	// return H(left || right)
+	register int l asm ("x20") = left;
+	register int r asm ("x21") = right;
+	register int result asm ("x22");
+
+	__asm__ volatile (
+		"pacga %[result], %[l], %[r]"
+		: [result] "=r" (result)
+		: [l] "r" (l), [r] "r" (r)
+		:
+	);
+
+	return result;
 }
 
+__attribute__ ((always_inline))
 int AuthArray::Hash(int a)
 {
 	// return H(a)
 	// used for leaf nodes
+
+	register int l asm ("x20") = a;
+	register int r asm ("x21") = 0;
+	register int result asm ("x22");
+
+	__asm__ volatile (
+		"pacga %[result], %[l], %[r]"
+		: [result] "=r" (result)
+		: [l] "r" (l), [r] "r" (r)
+		:
+	);
+
+	return result;
 }
