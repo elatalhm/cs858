@@ -146,6 +146,6 @@ int AuthArray::Hash(int left, int right)
 
 int AuthArray::Hash(int a)
 {
-	// return H(a)
+	// return H(a)Hash(
 	// used for leaf nodes
 }

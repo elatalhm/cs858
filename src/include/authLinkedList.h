@@ -20,6 +20,8 @@ class AuthLinkedList
    T get_byIndx(long index);
    LinkedListNode<T>* search_byValue(T value);
    void update_byIndx(T data,long index);
+   void verifyMAC(T value);
+   void calculateMAC(T value);
 };
 
 
