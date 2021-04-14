@@ -3,9 +3,11 @@
 ########################################################################
 
 # Compiler settings - Can be customized.
-CC = clang++-12 -target aarch64-unknown-linux-unknown -march=armv8.3-a
+#CC = clang++-12 -target aarch64-unknown-linux-unknown -march=armv8.3-a
+CC = g++ -march=armv8.3-a
 #CXXFLAGS = -stdlib=libc++ -std=c++11 -Wall --gcc-toolchain=/usr/aarch64-linux-gnu/
-CXXFLAGS = -stdlib=libc++ -std=c++11 -Wall -I/usr/aarch64-linux-gnu/include -I/usr/aarch64-linux-gnu/include/c++/9/aarch64-linux-gnu -I/usr/aarch64-linux-gnu/include/c++/9 -fuse-ld=/usr/aarch64-linux-gnu/bin/ld
+#CXXFLAGS = -stdlib=libc++ -std=c++11 -Wall -I/usr/aarch64-linux-gnu/include -I/usr/aarch64-linux-gnu/include/c++/9/aarch64-linux-gnu -I/usr/aarch64-linux-gnu/include/c++/9 -fuse-ld=/usr/aarch64-linux-gnu/bin/ld
+CXXFLAGS = -std=c++11 -Wall -fPIC
 LDFLAGS = 
 
 # Makefile settings - Can be customized.
