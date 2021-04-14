@@ -1,3 +1,5 @@
+#pragma once
+
 #include "linkedListNode.h"
 using namespace std;
 
@@ -6,12 +8,13 @@ class AuthLinkedList
 {
 
    private:
-   LinkedListNode *first;
+   LinkedListNode<T> *first;
    //LinkedListNode *last;
    //LinkedListNode *middle;
    int size;
    int size_MAC;
-   register int id asm ("r0");
+   // register int id asm ("r0");
+   int id;
 
    public:
    AuthLinkedList();

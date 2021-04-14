@@ -4,6 +4,46 @@
 #include <cstdlib>
 #include <cstring>
 
+__attribute__ ((always_inline))
+inline long* calculatePACForPutPT(long *putPT, long tail_prev_head){
+   
+
+	// return H(left || right)
+	register long* l asm ("x20") = putPT;
+	register long r asm ("x21") = tail_prev_head;
+	register long* result asm ("x22");
+
+	__asm__ volatile (
+		"pacga %[result], %[l], %[r]"
+		: [result] "=r" (result)
+		: [l] "r" (l), [r] "r" (r)
+		:
+	);
+
+	return result;
+
+}
+
+__attribute__ ((always_inline))
+inline long calculateMACForElement(int value, long prev_element){
+   
+
+	// return H(left || right)
+	register int l asm ("x20") = value;
+	register long r asm ("x21") = prev_element;
+	register long result asm ("x22");
+
+	__asm__ volatile (
+		"pacga %[result], %[l], %[r]"
+		: [result] "=r" (result)
+		: [l] "r" (l), [r] "r" (r)
+		:
+	);
+
+	return result;
+
+}
+
 AuthQueue::AuthQueue(unsigned int size)
 {
 	queue = new long[size+1];
@@ -162,42 +202,3 @@ bool AuthQueue::search(int input)
 	return false;
 }
 
-__attribute__ ((always_inline))
-long* calculatePACForPutPT(long *putPT, long tail_prev_head){
-   
-
-	// return H(left || right)
-	register long* l asm ("x20") = putPT;
-	register long r asm ("x21") = tail_prev_head;
-	register long* result asm ("x22");
-
-	__asm__ volatile (
-		"pacga %[result], %[l], %[r]"
-		: [result] "=r" (result)
-		: [l] "r" (l), [r] "r" (r)
-		:
-	);
-
-	return result;
-
-}
-
-__attribute__ ((always_inline))
-long calculateMACForElement(int value, long prev_element){
-   
-
-	// return H(left || right)
-	register int l asm ("x20") = value;
-	register long r asm ("x21") = prev_element;
-	register long result asm ("x22");
-
-	__asm__ volatile (
-		"pacga %[result], %[l], %[r]"
-		: [result] "=r" (result)
-		: [l] "r" (l), [r] "r" (r)
-		:
-	);
-
-	return result;
-
-}

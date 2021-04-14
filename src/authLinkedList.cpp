@@ -1,5 +1,7 @@
 #include "linkedListNode.h"
 #include "authLinkedList.h"
+#include <cstdlib>
+#include <string>
 using namespace std;
 
 
@@ -9,7 +11,7 @@ AuthLinkedList<T>::AuthLinkedList(){
     id = rand() % 10000;
     size_MAC = calculateMACForSize(size, id);
     first = nullptr;
-    calculateMACForPointers(first, (id.str()+"0").c_str());
+    calculateMACForPointers(first, (string(id)+"0").c_str());
 
 }
 
@@ -26,11 +28,11 @@ void AuthLinkedList<T>::insert_byIndx(T data, int index){
         throw(std::string("error: index is out of size of the list."));
     }
     if(index >= 2){    // verify pointer to head
-    verifyMACForPointers(first, (id.str()+"0").c_str());
+    verifyMACForPointers(first, (string(id)+"0").c_str());
     //traverse and verify each
     int counter = 1;
-    LinkedListNode * currentElement = first;
-    LinkedListNode * previouselement = first;
+    LinkedListNode<T> * currentElement = first;
+    LinkedListNode<T> * previouselement = first;
     if(currentElement->m_MAC != calculateMACForElements(currentElement->data, (first.str() + currentElement->nextElement.str()).c_str())){
             throw(std::string("error: verification fail"));
         }
@@ -43,32 +45,32 @@ void AuthLinkedList<T>::insert_byIndx(T data, int index){
         currentElement = currentElement->nextElement;
         counter = counter + 1;
     }
-    currentElement->nextElement = &LinkedListNode(data, currentElement->nextElement);
+    currentElement->nextElement = &LinkedListNode<T>(data, currentElement->nextElement);
     currentElement->nextElement->m_MAC = calculateMACForElements(currentElement->nextElement->data, (currentElement->nextElement.str() + currentElement->nextElement->nextElement.str()).c_str() );
     currentElement->m_MAC = calculateMACForElements(currentElement->data, (previouselement->nextElement.str() + currentElement->nextElement.str()).c_str() );
     size += 1;
-    size_MAC = calculateMACforSize(size, id);
+    size_MAC = calculateMACForSize(size, id);
     }
     else if (index == 1){
-        verifyMACForPointers(first, (id.str()+"0").c_str());
-        LinkedListNode * currentElement = first;
+        verifyMACForPointers(first, (string(id)+"0").c_str());
+        LinkedListNode<T> * currentElement = first;
         if(first->m_MAC != calculateMACForElements(first->data,  (first.str() + first->nextElement.str() ).c_str())){
             throw(std::string("error: verification fail"));
         }
-        currentElement->nextElement = &LinkedListNode(data, currentElement->nextElement);
+        currentElement->nextElement = &LinkedListNode<T>(data, currentElement->nextElement);
         currentElement->nextElement->m_MAC = calculateMACForElements(currentElement->nextElement->data, (currentElement->nextElement.str() + currentElement->nextElement->nextElement.str()).c_str()  );
         currentElement->m_MAC = calculateMACForElements(currentElement->data, (first.str() + currentElement->nextElement.str()).c_str() );
         size += 1;
-        size_MAC = calculateMACforSize(size, id);
+        size_MAC = calculateMACForSize(size, id);
     }
     else if (index == 0){
-            verifyMACForPointers(first, (id.str()+"0").c_str());
-            LinkedListNode* previous = first; 
-            first = &LinkedListNode(data, previous);
-            calculateMACForPointers(first, (id.str()+"0").c_str());
+            verifyMACForPointers(first, (string(id)+"0").c_str());
+            LinkedListNode<T> * previous = first; 
+            first = &LinkedListNode<T>(data, previous);
+            calculateMACForPointers(first, (string(id)+"0").c_str());
             first->m_MAC = calculateMACForElements(first->data, (first.str() + previous.str()).c_str());
             size += 1;
-            size_MAC = calculateMACforSize(size, id);
+            size_MAC = calculateMACForSize(size, id);
         
     }
 }
@@ -82,14 +84,14 @@ void AuthLinkedList<T>::delete_byIndx(int index){
     if(size <= index){
         throw(std::string("error: index is out of size of the list."));
     }
-    verifyMACForPointers(first, (id.str()+"0").c_str());
+    verifyMACForPointers(first, (string(id)+"0").c_str());
     //traverse and verify each
     if(index == 0){
         
         first = first->nextElement;
-        calculateMACForPointers(first, (id.str()+"0").c_str());
+        calculateMACForPointers(first, (string(id)+"0").c_str());
         size -= 1;
-        size_MAC = calculateMACforSize(size, id);
+        size_MAC = calculateMACForSize(size, id);
     }
     if(index == 1){
         if(first->m_MAC != calculateMACForElements(first->data, (first.str() + first->nextElement.str() ).c_str())){
@@ -98,12 +100,12 @@ void AuthLinkedList<T>::delete_byIndx(int index){
         first->nextElement = first->nextElement->nextElement;
         calculateMACForElements(first->nextElement->data, (first.str() + first->nextElement->nextElement.str()).c_str());
         size -= 1;
-        size_MAC = calculateMACforSize(size, id);
+        size_MAC = calculateMACForSize(size, id);
     }
     else{
     int counter = 1;
-    LinkedListNode * currentElement = first;
-    LinkedListNode * previousElement = first;
+    LinkedListNode<T> * currentElement = first;
+    LinkedListNode<T> * previousElement = first;
     if(first->m_MAC != calculateMACForElements(first->data, (first.str() + first->nextElement.str() ).c_str())){
             throw(std::string("error: verification fail"));
         }
@@ -112,14 +114,14 @@ void AuthLinkedList<T>::delete_byIndx(int index){
         if(currentElement->nextElement->m_MAC != calculateMACForElements(currentElement->nextElement->data, (currentElement->nextElement.str() + currentElement->nextElement->nextElement.str()).c_str())){
             throw(std::string("error: verification fail"));
         }
-        previouselement = currentElement;
+        previousElement = currentElement;
         currentElement = currentElement->nextElement;
         counter = counter + 1;
     }
     currentElement->nextElement = currentElement->nextElement->nextElement;
     currentElement->m_MAC = calculateMACForElements(currentElement->data,  (previousElement->nextElement.str() + currentElement->nextElement.str()).c_str());
     size -= 1;
-    size_MAC = calculateMACforSize(size, id);
+    size_MAC = calculateMACForSize(size, id);
     }
 }      
 
@@ -142,8 +144,8 @@ void AuthLinkedList<T>::update_byIndx(T data, int index){
     else{
    //traverse and verify each
     int counter = 1;
-    LinkedListNode * currentElement = first;
-    LinkedListNode * previousElement = first;
+    LinkedListNode<T> * currentElement = first;
+    LinkedListNode<T> * previousElement = first;
     if(first->m_MAC != calculateMACForElements(first->data, (first.str() + first->nextElement.str()).c_str() )){
             throw(std::string("error: verification fail"));
         }
@@ -153,7 +155,7 @@ void AuthLinkedList<T>::update_byIndx(T data, int index){
         if(currentElement->nextElement->m_MAC != calculateMACForElements(currentElement->nextElement->data, (currentElement->nextElement.str() + currentElement->nextElement->nextElement.str()).c_str() )){
             throw(std::string("error: verification fail"));
         }}
-        previouselement = currentElement;
+        previousElement = currentElement;
         currentElement = currentElement->nextElement;
         counter = counter + 1;
     }
@@ -170,7 +172,7 @@ LinkedListNode<T>* AuthLinkedList<T>::search_byValue(T value){
     verifyMACForPointers(first, id);
     //traverse and verify each
     int counter = 1;
-    LinkedListNode * currentElement = first;
+    LinkedListNode<T> * currentElement = first;
     if(first->m_MAC != calculateMACForElements(first->data, (first.str() + first->nextElement.str()).c_str() )){
             throw(std::string("error: verification fail"));
         }

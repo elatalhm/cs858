@@ -10,5 +10,7 @@ int main(int argc, const char** argv) {
 
 	AuthArray arr(8);
 
+	std::cout << "AuthArray created\n";
+
 	return 0;
 }
